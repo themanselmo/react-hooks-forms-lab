@@ -5,23 +5,47 @@ import Item from "./Item";
 
 function ShoppingList({ items }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [filter, setFilter] = useState("");
 
   function handleCategoryChange(event) {
     setSelectedCategory(event.target.value);
   }
 
-  const itemsToDisplay = items.filter((item) => {
-    if (selectedCategory === "All") return true;
+  function handleSearchChange(event) {
+    setFilter(event.target.value);
+  }
 
-    return item.category === selectedCategory;
-  });
+  // filter dropdown to either
+    // return all items
+    // return items by category
+
+
+  // then for text box
+    // filter the result array returned from the dropdown
+  const dropFilter = () => {
+    if (selectedCategory === "All"){
+      return items;
+    }
+    else {
+      return items.filter(item => item.category === selectedCategory);
+    }
+  };
+
+  const dropAndTextFilter = () => {
+    if(filter.length > 0) {
+      return dropFilter().filter(item => item.name.includes(filter))
+    }
+    else {
+      return dropFilter()
+    }
+  }
 
   return (
     <div className="ShoppingList">
       <ItemForm />
-      <Filter onCategoryChange={handleCategoryChange} />
+      <Filter onSearchChange={handleSearchChange} onCategoryChange={handleCategoryChange} />
       <ul className="Items">
-        {itemsToDisplay.map((item) => (
+        {dropAndTextFilter().map((item) => (
           <Item key={item.id} name={item.name} category={item.category} />
         ))}
       </ul>
