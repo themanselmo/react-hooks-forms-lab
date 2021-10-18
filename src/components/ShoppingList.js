@@ -3,9 +3,10 @@ import ItemForm from "./ItemForm";
 import Filter from "./Filter";
 import Item from "./Item";
 
-function ShoppingList({ items }) {
+function ShoppingList({ items, addItem }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [filter, setFilter] = useState("");
+
 
   function handleCategoryChange(event) {
     setSelectedCategory(event.target.value);
@@ -18,8 +19,6 @@ function ShoppingList({ items }) {
   // filter dropdown to either
     // return all items
     // return items by category
-
-
   // then for text box
     // filter the result array returned from the dropdown
   const dropFilter = () => {
@@ -42,7 +41,7 @@ function ShoppingList({ items }) {
 
   return (
     <div className="ShoppingList">
-      <ItemForm />
+      <ItemForm addItem={addItem} />
       <Filter onSearchChange={handleSearchChange} onCategoryChange={handleCategoryChange} />
       <ul className="Items">
         {dropAndTextFilter().map((item) => (
